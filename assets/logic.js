@@ -7,69 +7,78 @@
 //game ends when time runs out
 
 
-function game(){
+$(document).ready(function () {
 
+    // Hides body of game at open
+    $('container').hide();
 
-function getQuestions() {
-
-$.ajax({
-    url:
-        "https://opentdb.com/api.php?amount=10&category=31&difficulty=easy&type=multiple",
-    method: "GET"
-}).done(function (response) {
-    console.log(response);
-
-    var options = response.results;
-    var questions = [];
-    options.forEach(function (option) {
-        var answers = option.incorrect_answers
-        answers.push(option.correct_answer)
-        var question = {
-            question: option.question, //options[0]
-            correctAnswer: option.correct_answer,
-            answers: answers
-        }
-        questions.push(question);
+    // On button click shows the body of the game and hides the start button
+    $('.btn').on('click', function () {
+        $('container').show();
+        timer();
     })
-    
-    upDateHtml(questions);
-});
-}
+    function getQuestions() {
 
-function upDateHtml(questions){
-    for (i = 0; i < questions.length; i++) {
-        $('.game-Q-A').append(`<h1> ${questions[i].question} </h1>`);
-        for (j = 0; j < questions[i].answers.length; j++) {
-            $('.game-Q-A').append(`<input type = 'radio' name= 'question-${i}' value = ${questions[i].answers[j]}> ${questions[i].answers[j]}`);
+        $.ajax({
+            url:
+                "https://opentdb.com/api.php?amount=10&category=31&difficulty=easy&type=multiple",
+            method: "GET"
+        }).done(function (response) {
+            console.log(response);
+
+            var options = response.results;
+            var questions = [];
+            options.forEach(function (option) {
+                var answers = option.incorrect_answers
+                answers.push(option.correct_answer)
+                var question = {
+                    question: option.question, //options[0]
+                    correctAnswer: option.correct_answer,
+                    answers: answers
+                }
+                questions.push(question);
+            })
+
+            upDateHtml(questions);
+        });
+    }
+
+    function upDateHtml(questions) {
+        for (i = 0; i < questions.length; i++) {
+            $('.game-Q-A').append(`<h3> ${questions[i].question} </h3>`);
+            for (j = 0; j < questions[i].answers.length; j++) {
+                $('.game-Q-A').append(`<input type = 'radio' name= 'question-${i}' value = ${questions[i].answers[j]}> ${questions[i].answers[j]}`);
+            }
         }
     }
-} 
 
-getQuestions();
+    getQuestions();
 
-var number = 4;
-var intervalId;
 
-function run() {
-    clearInterval(intervalId);
-    intervalId = setInterval(decrement, 1000);
-}
+    var clockRunning = false;
+    var gameTime = 5;
+    var intervalId;
 
-function decrement() {
-    number--;
-    $("#timer").html("<h2>" + number + "</h2>");
-    //  Once number hits zero...
-    if (number === 0) {
-
-        //  ...run the stop function.
-        stop();
-
-        //  Alert the user that time is up.
-        alert("Time Up!");
+    function timer() {
+        // DONE: Use setInterval to start the count here and set the clock to running.
+        if (!clockRunning) {
+            intervalId = setInterval(count, 1000);
+            clockRunning = true;
+        }
     }
-}
-run();
-}
 
-game();
+    function decrement() {
+        gameTime--;
+        $(".btn").text(`${gameTime}`);
+        //  Once number hits zero...
+        if (gameTime === 0) {
+            clockRunning = false;
+            //  ...run the stop function.
+            // stop();
+        }
+    }
+
+});
+
+
 

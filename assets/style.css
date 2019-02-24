@@ -1,3 +1,41 @@
 body {
     font-family: 'Roboto', sans-serif;
+    background-color: rgb(125, 226, 240);
+    opacity: 50%;
+}
+
+.jumbotron {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* background-color: rgba(214, 199, 199, 0.26); */
+    border: 1px solid rgb(243, 64, 94);
+}
+
+.jumbo-image {
+    background-image: url("images/cropped-wallpaper-for-site-2.jpg");
+    background-size: cover;
+}
+
+.btn {
+    background-color: yellow;
+    color: black;
+}
+
+.display-4 {
+    text-align: center;
+    background-color: aqua;
+    border: 1px solid yellow;
+    width: 45%;
+    border-radius: 5px;
+}
+
+.game-Q-A {
+    margin-left: 40px;
+    padding: 0 px;
+}
+
+.col-md-8, .col-md-4 {
+    padding: 0;
 }
