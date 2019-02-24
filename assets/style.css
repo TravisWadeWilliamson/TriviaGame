@@ -9,7 +9,9 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border: 2px solid rgba(252, 74, 103, 0.856);
+    border: 2px solid rgba(224, 39, 70, 0.856);
+    
+    
 }
 
 .jumbo-image {
