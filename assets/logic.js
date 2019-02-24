@@ -1,7 +1,5 @@
 /*Notes to Grader:
 
-Somehow I got myself stuck in a loop. The api will retrieve a limited amount of question sets, thus displaying randomly 5 or so different sets of questions. So I wanted to have the container clear and then when startRestartGame was called it would basically start the game over from scratch. But what I am finding now,The When you click the start button the second time the container clears, the first object remains and the next object called by the API is appended to the page. I'm not sure how to stop that from happening.
-
 Things I didn't get to:
     1) Creating the logic to match the user selection to the correct question. To do that I think I would have needed to create a loop that would look at each question. The logic would be if user selection === correct answer that would have been one point. Else, nothing because my intent was not to tally loss points.
 
@@ -35,6 +33,11 @@ function startRestartGame() {
     $('container').show();
     timer();
     getQuestions();
+}
+
+//Function to clear the object from the previous API call for the next round
+function clearApiInfoDiv () {
+    $(".game-Q-A").empty();
 }
 
 //Here we are grabbing our trivia questions from the API - this was hard and I got a lot of help from my tutor with this.
@@ -117,6 +120,7 @@ function upDateHtml(questions) {
         if (gameTime === 0) {
             //  ...run the stop function.
             stop();
+            clearApiInfoDiv();
             $(".btn").text(`Start`);
             gameTime = 55
         }

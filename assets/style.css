@@ -1,7 +1,7 @@
 body {
     font-family: 'Roboto', sans-serif;
     background-color: rgb(174, 244, 253);
-    opacity: 50%;
+    
 }
 
 .jumbotron {
@@ -26,9 +26,8 @@ body {
 .display-4 {
     text-align: center;
     background-color: rgb(95, 232, 250);
-    opacity: 25%;
     border: 2px solid yellow;
-    width: 33%;
+    width: 45%;
     border-radius: 5px;
 }
 
