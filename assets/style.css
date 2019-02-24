@@ -1,6 +1,6 @@
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: rgb(125, 226, 240);
+    background-color: rgb(174, 244, 253);
     opacity: 50%;
 }
 
@@ -9,8 +9,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    /* background-color: rgba(214, 199, 199, 0.26); */
-    border: 1px solid rgb(243, 64, 94);
+    border: 2px solid rgba(252, 74, 103, 0.856);
 }
 
 .jumbo-image {
@@ -21,13 +20,15 @@ body {
 .btn {
     background-color: yellow;
     color: black;
+    border: 2px solid rgb(24, 9, 236);
 }
 
 .display-4 {
     text-align: center;
-    background-color: aqua;
-    border: 1px solid yellow;
-    width: 45%;
+    background-color: rgb(95, 232, 250);
+    opacity: 25%;
+    border: 2px solid yellow;
+    width: 33%;
     border-radius: 5px;
 }
 
