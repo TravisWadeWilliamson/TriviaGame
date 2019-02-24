@@ -18,14 +18,14 @@ $.ajax({
     method: "GET"
 }).done(function (response) {
     console.log(response);
-    
+
     var options = response.results;
     var questions = [];
     options.forEach(function (option) {
         var answers = option.incorrect_answers
         answers.push(option.correct_answer)
         var question = {
-            question: option.question,
+            question: option.question, //options[0]
             correctAnswer: option.correct_answer,
             answers: answers
         }
