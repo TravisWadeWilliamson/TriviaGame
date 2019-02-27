@@ -36,7 +36,7 @@ function startRestartGame() {
 }
 
 //Function to clear the object from the previous API call for the next round
-function clearApiInfoDiv () {
+function clearApiInfoDiv() {
     $(".game-Q-A").empty();
 }
 
@@ -45,8 +45,7 @@ function getQuestions() {
 
     //calling out to the API getting our trivia Qs.
     $.ajax({
-        url:
-            "https://opentdb.com/api.php?amount=10&category=31&difficulty=easy&type=multiple",
+        url: "https://opentdb.com/api.php?amount=10&category=31&difficulty=easy&type=multiple",
         method: "GET"
 
         //waits for the ajax response then starts compiling the info after ajax delivers
@@ -54,32 +53,33 @@ function getQuestions() {
         console.log(response);
 
         //creates a place to hold our options info
-        var options =
+        //digs further into the array of objects for the 4 loop to run through
+        var options = response.results;
+        console.log(options);
 
-            //digs further into the array of objects for the 4 loop to run through
-            response.results;
-
-        //creates an array to hold the 
+        //creates an array to hold the questions included in the API
         var questions = [];
 
-        //4 loop loops through and pulls out the answers which in this API contained correct and incorrect answers in one object
+        //4 loop loops through and pushes the correct answers into incorrect answers so we can display all the possible choices for the user
         options.forEach(function (option) {
             var answers = option.incorrect_answers
 
             //this pushes the correct answer to our correct answer variable below
             answers.push(option.correct_answer)
-
+            console.log(answers);
             //hold the questions, incorrect answers and correct answers as key value pairs in an object
             var question = {
                 question: option.question,
                 correctAnswer: option.correct_answer,
                 answers: answers
             }
+            console.log(question.correctAnswer);
             // Pushes the Qs and As into the var questions array
             questions.push(question);
         })
         //Runs the function created below to push all the Qs and As to the html AFTER everything is compiled
         upDateHtml(questions);
+        console.log(questions)
     });
 }
 //created a function which updates the HTML with the data from the API.
@@ -91,47 +91,60 @@ function upDateHtml(questions) {
 
         //this 4 loop runs through the all fo the possible answers and appends them to same above div. It also assigns the answers for each question the index value of the question for use in the logic to follow
         for (j = 0; j < questions[i].answers.length; j++) {
-            $('.game-Q-A').append(`<input type = 'radio' name= 'question-${i}' value = ${questions[i].answers[j]}> ${questions[i].answers[j]}`);
+            $('.game-Q-A').append(`<input type = 'radio' name= 'question-${i}' onclick="myGuess(this)" value='${questions[i].answers[j]}'> ${questions[i].answers[j]}`);
         }
     }
 }
 
+function myGuess(radio) {
+    const { value, name } = radio;
+    console.log(value);
+    console.log(options.correct_answer);
+}
 
-//Calls the function to grab our API info
-// getQuestions();
+// create a var for user selection
+$('input[type="button"]').on('click', function(){
+    var userSelection = $(this).val();
+    console.log(this);
+})
+
+
+
+    //Calls the function to grab our API info
+    // getQuestions();
 
     $('.btn').on('click', function () {
         startRestartGame();
     })
 
-    var gameTime = 55;
-    var intervalId;
+var gameTime = 55;
+var intervalId;
 
-    function timer() {
-        // DONE: Use setInterval to start the count here and set the clock to running.
-        clearInterval(intervalId);
-        intervalId = setInterval(decrement, 1000);
+function timer() {
+    // DONE: Use setInterval to start the count here and set the clock to running.
+    clearInterval(intervalId);
+    intervalId = setInterval(decrement, 1000);
+}
+
+function decrement() {
+    gameTime--;
+    $(".btn").text(`Time: ${gameTime}`);
+    //  Once number hits zero...
+    if (gameTime === 0) {
+        //  ...run the stop function.
+        stop();
+        clearApiInfoDiv();
+        $(".btn").text(`Start`);
+        gameTime = 55
     }
+}
 
-    function decrement() {
-        gameTime--;
-        $(".btn").text(`Time: ${gameTime}`);
-        //  Once number hits zero...
-        if (gameTime === 0) {
-            //  ...run the stop function.
-            stop();
-            clearApiInfoDiv();
-            $(".btn").text(`Start`);
-            gameTime = 55
-        }
-    }
+function stop() {
 
-    function stop() {
-
-        // DONE: Use clearInterval to stop the count here and set the clock to not be running.
-        clearInterval(intervalId);
-        $('container').hide();
-    }
+    // DONE: Use clearInterval to stop the count here and set the clock to not be running.
+    clearInterval(intervalId);
+    $('container').hide();
+}
 
 
 
