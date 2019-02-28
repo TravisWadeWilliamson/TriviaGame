@@ -40,7 +40,9 @@ function clearApiInfoDiv() {
     $(".game-Q-A").empty();
 }
 
-//Here we are grabbing our trivia questions from the API - this was hard and I got a lot of help from my tutor with this.
+//Here we are grabbing our trivia questions from the API and pulling them outside of the following function to avoid scoping issues - this was hard and I got a lot of help from my tutor with this.
+var questionsArr = [];
+
 function getQuestions() {
 
     //calling out to the API getting our trivia Qs.
@@ -50,12 +52,15 @@ function getQuestions() {
 
         //waits for the ajax response then starts compiling the info after ajax delivers
     }).then(function (response) {
-        console.log(response);
+        ////console logged the response from the API
+        // console.log(response);
 
         //creates a place to hold our options info
         //digs further into the array of objects for the 4 loop to run through
         var options = response.results;
-        console.log(options);
+
+        // //Console logged var options to make sure I was pulling the info out of the response
+        // console.log(options);
 
         //creates an array to hold the questions included in the API
         var questions = [];
@@ -66,20 +71,22 @@ function getQuestions() {
 
             //this pushes the correct answer to our correct answer variable below
             answers.push(option.correct_answer)
-            console.log(answers);
+            //console logged answers to make sure was getting a new array that included the correct answer w/in all the answers
+            // console.log(answers);
             //hold the questions, incorrect answers and correct answers as key value pairs in an object
             var question = {
                 question: option.question,
                 correctAnswer: option.correct_answer,
                 answers: answers
             }
-            console.log(question.correctAnswer);
+            // console.log(question.correctAnswer);
             // Pushes the Qs and As into the var questions array
             questions.push(question);
         })
         //Runs the function created below to push all the Qs and As to the html AFTER everything is compiled
         upDateHtml(questions);
-        console.log(questions)
+        questionsArr = questions
+        // console.log(questions)
     });
 }
 //created a function which updates the HTML with the data from the API.
@@ -91,33 +98,45 @@ function upDateHtml(questions) {
 
         //this 4 loop runs through the all fo the possible answers and appends them to same above div. It also assigns the answers for each question the index value of the question for use in the logic to follow
         for (j = 0; j < questions[i].answers.length; j++) {
-            $('.game-Q-A').append(`<input type = 'radio' name= 'question-${i}' onclick="myGuess(this)" value='${questions[i].answers[j]}'> ${questions[i].answers[j]}`);
+            $('.game-Q-A').append(`<input type = 'radio' name= 'question-${i}' onclick="myGuess(this)" onclick="this.disabled = true "value='${questions[i].answers[j]}'> ${questions[i].answers[j]}`);
         }
     }
 }
 
-function myGuess(radio) {
+var points = 0;
+//Creates a function to 
+function myGuess(radio, index) {
     const { value, name } = radio;
-    console.log(value);
-    console.log(options.correct_answer);
+    var userAnswer = value
+    console.log(userAnswer);
+    var index = name.split("-")[1]
+    var correctAnswer = questionsArr[index].correctAnswer
+
+
+    //compare userAnswer with correctAnswer and tally points
+    if (userAnswer === correctAnswer) {
+        console.log('correct');
+        points++;
+        console.log(points);
+    }
 }
 
 // create a var for user selection
-$('input[type="button"]').on('click', function(){
-    var userSelection = $(this).val();
-    console.log(this);
+// $('input[type="button"]').one('click', function(){
+//     var userSelection = $(this).val();
+//     console.log(this);
+// })
+
+
+
+//Calls the function to grab our API info
+// getQuestions();
+
+$('.btn').on('click', function () {
+    startRestartGame();
 })
 
-
-
-    //Calls the function to grab our API info
-    // getQuestions();
-
-    $('.btn').on('click', function () {
-        startRestartGame();
-    })
-
-var gameTime = 55;
+var gameTime = 15;
 var intervalId;
 
 function timer() {
@@ -135,15 +154,33 @@ function decrement() {
         stop();
         clearApiInfoDiv();
         $(".btn").text(`Start`);
-        gameTime = 55
+        gameTime = 15;
+        knowledgeAssessment();
     }
+}
+
+function knowledgeAssessment() {
+    if (points <= 4) {
+        $('.knowledgeAssessment').text(`Your score was ${points} out of 10. Off with your topknot...`);
+    };
+    if (points >= 5 && points <= 7) {
+        $('.knowledgeAssessment').text(`Your score was ${points} out of 10. Your knowledge of manga and Japanime isn't bad. Consider watching more Japanmie and reading more manga.........`);
+    };
+
+    if (points >= 8 && points <= 9) {
+        $('.knowledgeAssessment').text(`Your score was ${points} out of 10. Your knowledge of manga and Japanime is impressive!`);
+    };
+
+    if (points === 10) {
+        $('.knowledgeAssessment').text(`Your score was ${points} out of 10. Hey, are you from Japan?Your knowledge of manga and Japanime is impressive!`);
+    };
+
 }
 
 function stop() {
 
     // DONE: Use clearInterval to stop the count here and set the clock to not be running.
     clearInterval(intervalId);
-    $('container').hide();
 }
 
 
