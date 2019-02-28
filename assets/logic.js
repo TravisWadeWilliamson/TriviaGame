@@ -1,15 +1,18 @@
 /*Notes to Grader:
 
 Things I didn't get to:
-    1) Creating the logic to match the user selection to the correct question. To do that I think I would have needed to create a loop that would look at each question. The logic would be if user selection === correct answer that would have been one point. Else, nothing because my intent was not to tally loss points.
+   
+    1) I wanted to add some Japanie tunes to the site, but never even got around to researching that.
 
-    2) After tallying points I wanted to have a range of scores with different text responses. This would have happened in col-md-4. So one to three correct answers would have dynamically pushed some text into a dynamically created div that would say something like, "You got 3 out of 10. YOu need to read more manga and watch more Japanime". The next range would have been 4 to 7 and would have produced a statement something like, "You got a 5 out of ten. You've done a bit of reading and watching, but you are still need more time with your nose in a book and your eyes glued to the TV". Of course the last range, 8 through 10, would have lavished approbations on the user.
+    2) The API offered 3 levels of difficulty. Ideally, I would have liked to have pulled the more difficult APIs to make the game increasingly harder if the player ranked in the top. If the player couldn't get a better score, the player would have received the next set of questions at the same level.
 
-    3) I wanted to add some Japanie tunes to the site, but never even got around to researching that.
+    3) A bit more styling - the radio buttons need padding/margins and need to be bigger, as does the text for the answers.
 
-    4) The API offered 3 levels of difficulty. Ideally, I would have liked to have pulled the more difficult APIs to make the game increasingly harder if the player ranked in the top. If the player couldn't get a better score, the player would have received the next set of questions at the same level.
-
-    5) A bit more styling - the radio buttons need padding/margins and need to be bigger, as does the text for the answers.
+Biggest Problems:
+    1) User can click more than once on each question - .one() didn't seem to work, nor did any other solution I tried.
+    2) correct answers are only tallied up through 8, i.e. 9 and 10 don't register.
+    3) When you start again, points continue to be tallied from the first game.
+    
 */
 
 
@@ -136,7 +139,7 @@ $('.btn').on('click', function () {
     startRestartGame();
 })
 
-var gameTime = 15;
+var gameTime = 46;
 var intervalId;
 
 function timer() {
@@ -154,26 +157,41 @@ function decrement() {
         stop();
         clearApiInfoDiv();
         $(".btn").text(`Start`);
-        gameTime = 15;
+        gameTime = 46;
         knowledgeAssessment();
     }
 }
 
 function knowledgeAssessment() {
-    if (points <= 4) {
-        $('.knowledgeAssessment').text(`Your score was ${points} out of 10. Off with your topknot...`);
-    };
-    if (points >= 5 && points <= 7) {
-        $('.knowledgeAssessment').text(`Your score was ${points} out of 10. Your knowledge of manga and Japanime isn't bad. Consider watching more Japanmie and reading more manga.........`);
-    };
+    switch (true) {
+        case points <= 4:
+            $('.knowledgeAssessment').text(`Your score was ${points} out of 10. Off with your topknot...`);
+            break;
+        case points >= 5 && points <= 7:
+            $('.knowledgeAssessment').text(`Your score was ${points} out of 10. Your knowledge of manga and Japanime isn't bad. Consider watching more Japanmie and reading more manga.........`);
+            break;
+        case points >= 8 && points <= 9:
+            $('.knowledgeAssessment').text(`Your score was ${points} out of 10. Your knowledge of manga and Japanime is impressive!`);
+            break;
+        case points === 10:
+            $('.knowledgeAssessment').text(`Your score was ${points} out of 10. You win an all-expense paid, first-class trip to Tokyo! NOT!`);
 
-    if (points >= 8 && points <= 9) {
-        $('.knowledgeAssessment').text(`Your score was ${points} out of 10. Your knowledge of manga and Japanime is impressive!`);
-    };
+    }
 
-    if (points === 10) {
-        $('.knowledgeAssessment').text(`Your score was ${points} out of 10. Hey, are you from Japan?Your knowledge of manga and Japanime is impressive!`);
-    };
+    // if (points <= 4) {
+    //     $('.knowledgeAssessment').text(`Your score was ${points} out of 10. Off with your topknot...`);
+    // };
+    // if (points >= 5 && points <= 7) {
+    //     $('.knowledgeAssessment').text(`Your score was ${points} out of 10. Your knowledge of manga and Japanime isn't bad. Consider watching more Japanmie and reading more manga.........`);
+    // };
+
+    // if (points >= 8 && points <= 9) {
+    //     $('.knowledgeAssessment').text(`Your score was ${points} out of 10. Your knowledge of manga and Japanime is impressive!`);
+    // };
+
+    // if (points === 10) {
+    //     $('.knowledgeAssessment').text(`Your score was ${points} out of 10. You win an all-expense paid, first-class trip to Tokyo! NOT!`);
+    // };
 
 }
 

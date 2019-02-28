@@ -33,11 +33,16 @@ body {
     border-radius: 5px;
 }
 
-.game-Q-A {
-    margin-left: 40px;
-    padding: 0 px;
-}
-
-.col-md-8, .col-md-4 {
+.col-md-12 {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
     padding: 0;
 }
+.game-Q-A {
+    
+    margin: 40px;
+    padding: 10 px;
+}
+
